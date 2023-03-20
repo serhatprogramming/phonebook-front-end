@@ -65,14 +65,23 @@ const App = () => {
         showNotification(message);
       }
     } else {
-      phoneService.addNewPerson(personAdded).then((newPerson) => {
-        setPersons(persons.concat(newPerson));
-        const message = {
-          content: `${newPerson.name} is added`,
-          style: "info",
-        };
-        showNotification(message);
-      });
+      phoneService
+        .addNewPerson(personAdded)
+        .then((newPerson) => {
+          setPersons(persons.concat(newPerson));
+          const message = {
+            content: `${newPerson.name} is added`,
+            style: "info",
+          };
+          showNotification(message);
+        })
+        .catch((e) => {
+          const message = {
+            content: e.response.data.error,
+            style: "error",
+          };
+          showNotification(message);
+        });
     }
     setNewName("");
     setNumber("");
