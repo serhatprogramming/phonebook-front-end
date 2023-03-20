@@ -48,15 +48,22 @@ const App = () => {
             )
           )
           .catch((e) => {
-            console.log(e);
-            const message = {
-              content: `${updatedPerson.name} is not in the databse`,
-              style: "error",
-            };
-            showNotification(message);
-            setPersons(
-              persons.filter((person) => person.name !== updatedPerson.name)
-            );
+            if (e.response.data.error.includes("Validation failed")) {
+              const message = {
+                content: e.response.data.error,
+                style: "error",
+              };
+              showNotification(message);
+            } else {
+              const message = {
+                content: `${updatedPerson.name} is not in the databse`,
+                style: "error",
+              };
+              showNotification(message);
+              setPersons(
+                persons.filter((person) => person.name !== updatedPerson.name)
+              );
+            }
           });
         const message = {
           content: `${updatedPerson.name} is updated`,
